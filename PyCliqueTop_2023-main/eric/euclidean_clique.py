@@ -1,4 +1,6 @@
-# Package imports
+""" Script to randomly sample points from Euclidean geometry and obtain their Betti curves """
+
+# Package imports 
 import sys
 import numpy as np
 import scipy
@@ -13,19 +15,18 @@ from compute_betti_curves import compute_betti_curves
 from plot_betti_curves import plot_betti_curves
 
 # HELPER FUNCTIONS
-def center_and_scale(s):
-    """
-    Centering and scaling the matrix function
-    """
-    s = s - np.reshape(np.mean(s, axis=1), (s.shape[0], 1))
-    s = s / np.reshape(np.var(s, axis=1), (s.shape[0], 1))
-    return s
+def sample_spherical(npoints, ndim):
+    """ Returns a matrix containing row vector points from a Euclidean unit ball """
+    random_sphere_points = np.random.randn(npoints, ndim)
+    for i in range(len(random_sphere_points)):
+        random_sphere_points[i] = random_sphere_points[i] / np.linalg.norm(random_sphere_points[i])
+    return random_sphere_points
 
-# Draws 100 observations of 88 independent uniformly-distributed random variables; creates pairwise correlation matrix
+# Generate random 100 points on a unit ball
 n_samples = 100
-geometry_dim = 5
-random_unif_matrix = np.random.uniform(0,1,(n_samples,geometry_dim))
-cov_matrix = np.cov(center_and_scale(random_unif_matrix))
+geometry_dim = 10
+random_ball_matrix = sample_spherical(n_samples,geometry_dim)
+cov_matrix = np.corrcoef(random_ball_matrix)
 [betti_curves, edge_densities] = compute_betti_curves(cov_matrix)
 
 # Plots the Betti curves
@@ -35,6 +36,5 @@ ax[0].imshow(cov_matrix, cmap='jet')
 ax[1] = plot_betti_curves(ax[1], betti_curves, edge_densities, colors, title_string = 'correlations')
 
 # Shows the matrix and Betti curves 
-plt.suptitle('random.py: compute_betti_curves() with Ndim=' + str(geometry_dim) + ' and ' + str(n_samples) + ' samples')
+plt.suptitle('euclidean.py: compute_betti_curves() with Ndim=' + str(geometry_dim) + ' and ' + str(n_samples) + ' samples')
 plt.show()
-
