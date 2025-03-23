@@ -59,7 +59,7 @@ from pyCliqueTop_2023_apr_2_2023 import plot_betti_curves
 # ________________________________________________________________
 # (1) Set the size of the (n,n) symmetric matrix (equivalently, the number of vertices in the order complex)
 # ________________________________________________________________
-n = 40 
+n = 100 
 # ________________________________________________________________
 # (2) Make a random symmetric iid matrix of size (n,n)
 # ________________________________________________________________
@@ -71,7 +71,7 @@ for i in range(n):
 # (3) Make a uniformly random sample of 'n' points in a 'geometric_dim'-dimensional 
 # unit cube in Euclidean space
 # ________________________________________________________________
-geometric_dim = 3
+geometric_dim = 5
 xy_coords = np.random.uniform(size=(n,geometric_dim))
 # ________________________________________________________________
 # (4) Make a random geometric matrix of size (n,n) 
