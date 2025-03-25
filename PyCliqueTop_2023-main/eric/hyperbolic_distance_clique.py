@@ -19,6 +19,14 @@ def sample_hyperbolic(npoints, ndim):
     """ Generate random points on an ndim-dimensional hyperbolic ball """
     # TODO: Figure out how to sample points from hyperbolic space
 
+    # Loop through npoints
+
+    # Pick a random radii from 0.9Rmax to Rmax = 7
+    
+    # Pick a uniform random angle
+
+    # Compute the distance between the points using the helper function
+
     pass
 
 
