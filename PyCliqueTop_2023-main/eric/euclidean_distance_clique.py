@@ -50,7 +50,7 @@ def compute_distance_matrix(point_matrix):
 
 # Generate random 100 points on an ndim-dimensional unit cube, and then compute the distances between points to put into matrix form
 n_samples = 100
-geometry_dim = 3
+geometry_dim = 5
 random_euclidean_matrix = sample_euclidean(n_samples,geometry_dim)
 euclidean_distance_matrix = compute_distance_matrix(random_euclidean_matrix)
 [betti_curves, edge_densities] = compute_betti_curves(euclidean_distance_matrix, similarity=False)
