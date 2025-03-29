@@ -15,6 +15,13 @@ from compute_betti_curves import compute_betti_curves
 from plot_betti_curves import plot_betti_curves
 
 # HELPER FUNCTIONS
+def hyperbolic_density(Rmin, Rmax, r):
+    """
+    Returns the probability density of sampling a random radius on a hyperbolic ball
+    """
+    pass
+
+
 def sample_hyperbolic(ndim, Rmax):
     """ Generate random points on an ndim-dimensional hyperbolic ball """
     sample_point = np.zeros((ndim,))
