@@ -1,6 +1,6 @@
-""" Script that displays the Betti curves for dataset from Venkatesh Murthy lab """
+""" Conducts principal component analysis on the olfactory data points """
 
-# Package imports and scripts from current working directory
+# Package imports
 import numpy as np
 import sys
 from sklearn.preprocessing import StandardScaler
@@ -11,12 +11,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import csv 
 from ast import literal_eval
 import numpy as np
-
-# Appending file path to import clique-top specific libraries (or use '~' for home directory)
-sys.path.append('/Users/ericxu/Documents/Github/Murthy_CliqueTop/PyCliqueTop_2023-main') 
-# Other script imports
-from compute_betti_curves import compute_betti_curves
-from plot_betti_curves import plot_betti_curves
 
 dfbin = pd.read_csv('../../vcf/Matrix2.csv')
 mixnames = dfbin.columns[1:].values
@@ -116,21 +110,37 @@ first_item_concentration_matrix = concentration_matrix[:,:,0]
 # Pre-process the concentration matrix to convert the NaN values to be equal to zero
 cleaned_concentration_matrix = np.nan_to_num(first_item_concentration_matrix, nan=0)
 
-# Computes the correlation matrix between the various chemical compounds --> i think this means our correlation matrix would have shape (8729, 8729)
-# TODO: Find out how to deal with foods that are missing concentration data 
-food_correlation_matrix = np.corrcoef(cleaned_concentration_matrix)
-[betti_curves, edge_densities] = compute_betti_curves(food_correlation_matrix, similarity=True)
+# Standardize the data (important for PCA)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(cleaned_concentration_matrix)
+    
+# Choose the number of components
+# n_components = min(X_scaled.shape[0], X_scaled.shape[1]) # Maximum possible components
 
-# Plots the Betti curves
-fig, ax = plt.subplots(nrows = 1, ncols = 2, figsize = (12,7))
-colors = ['black','orange','red','blue']
-ax[0].imshow(food_correlation_matrix, cmap='jet')
-ax[1] = plot_betti_curves(ax[1], betti_curves, edge_densities, colors, title_string = 'euclidean correlations')
+# Apply PCA
+pca = PCA(n_components=3)
+pca.fit(X_scaled)
+    
+#Transform data to the new PCA space
+X_pca = pca.transform(X_scaled)
+    
+# Create a new DataFrame with the PCA results
+print(pca.explained_variance_ratio_)
+pca_df = pd.DataFrame(data=X_pca)
+pca_df.columns = ["PC1", "PC2", "PC3"]
 
-# Shows the matrix and Betti curves 
-plt.suptitle('full_food_clique.py: compute_betti_curves()')
+print(pca_df)
+
+# Create a 3D plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot the points
+ax.scatter(pca_df['PC1'], pca_df['PC2'], pca_df['PC3'])
+
+# Set labels for axes
+ax.set_xlabel('Principal Component 1')
+ax.set_ylabel('Principal Component 2')
+ax.set_zlabel('Principal Component 3')
+
 plt.show()
-
-
-
-
