@@ -9,9 +9,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # Loading data
-strawberry_odor_df = pd.read_csv('../../fruit_data/revised_tomato_dataset.csv')
-# strawberry_odor_df.drop('Strawberry Type/Chemical Label (Each entry is the volatility of the sample in ng / gFW hr)', axis=1, inplace=True)
-X = strawberry_odor_df.to_numpy()
+blueberry_odor_df = pd.read_csv('../../fruit_data/revised_blueberry_dataset.csv')
+X = blueberry_odor_df.to_numpy()
     
 # Standardize the data (important for PCA)
 scaler = StandardScaler()
@@ -43,6 +42,6 @@ ax.scatter(pca_df['PC1'], pca_df['PC2'], pca_df['PC3'])
 ax.set_xlabel('Principal Component 1')
 ax.set_ylabel('Principal Component 2')
 ax.set_zlabel('Principal Component 3')
-plt.title("PCA with 3 Principal Components on Tomato Data")
+plt.title("PCA with 3 Principal Components on Blueberry Data")
 
 plt.show()
